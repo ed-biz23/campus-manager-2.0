@@ -4,11 +4,11 @@ const Sequelize = require("sequelize");
 const basename = path.basename(module.filename);
 const env = process.env.NODE_ENV || "development";
 const config = require(`${__dirname}/../config/config.js`)[env];
-console.log(config);
 const db = {};
 
 let sequelize;
 if (config.use_env_variable) {
+  console.log(process.env[config.use_env_variable]);
   sequelize = new Sequelize(process.env[config.use_env_variable], {
     dialect: "postgres",
     protocol: "postgres"
