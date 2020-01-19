@@ -13,8 +13,11 @@ console.log("this is the environment: ", env);
 const db = {};
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+if (process.env.DATABASE_URL) {
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: "postgres",
+    protocol: "postgres"
+  });
 } else if (config.environment === "production") {
   sequelize = new Sequelize(
     process.env.DB_NAME,
