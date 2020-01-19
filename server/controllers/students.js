@@ -55,7 +55,6 @@ module.exports = {
           }
         ]
       });
-      console.log(student);
       if (!student) {
         return res.status(404).json({ message: "Student Not Found" });
       }
