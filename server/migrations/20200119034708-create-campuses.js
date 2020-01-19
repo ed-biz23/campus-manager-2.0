@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable("Campuses", {
+    return queryInterface.createTable('Campuses', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,31 +9,28 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        allowNull: false,
         type: Sequelize.STRING
       },
-      imageUrl: {
-        type: Sequelize.STRING,
-        defaultValue: "https://svgshare.com/i/DdH.svg"
+      image_url: {
+        type: Sequelize.TEXT
       },
       address: {
-        allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       description: {
         type: Sequelize.TEXT
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("Campuses");
+    return queryInterface.dropTable('Campuses');
   }
 };

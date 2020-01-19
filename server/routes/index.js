@@ -1,14 +1,22 @@
-const campusController = require("../controllers").campus;
+const campusController = require("../controllers").campuses;
+const studentController = require("../controllers").students;
 
 module.exports = app => {
-  app.get("/api", (req, res) => {
-    res.json({ message: "Welcome!!" });
+  app.get("/api", (_, res) => {
+    res.json({ message: "Please specify valid endpoint." });
   });
 
   // Campus Routes
-  app.post("/api/campus", campusController.create);
-  app.get("/api/campus", campusController.getAllCampuses);
-  app.get("/api/campus/:id", campusController.getCampus);
-  app.put("/api/campus/:id", campusController.updateCampus);
-  app.delete("/api/campus/:id", campusController.deleteCampus);
+  app.post("/api/campuses", campusController.create);
+  app.get("/api/campuses/all", campusController.list);
+  app.get("/api/campuses/:id", campusController.retrieve);
+  app.put("/api/campuses/:id", campusController.update);
+  app.delete("/api/campuses/:id", campusController.delete);
+
+  // Student Routes
+  app.post("/api/students", studentController.create);
+  app.get("/api/students/all", studentController.list);
+  app.get("/api/students/:id", studentController.retrieve);
+  app.put("/api/students/:id", studentController.update);
+  app.delete("/api/students/:id", studentController.delete);
 };

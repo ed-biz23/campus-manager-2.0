@@ -1,5 +1,7 @@
-const campus = require("./campus");
+const campuses = require("./campuses");
+const students = require("./students");
 
 module.exports = {
-  campus
+  campuses,
+  students
 };
