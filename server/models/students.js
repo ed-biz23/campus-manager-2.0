@@ -35,14 +35,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL(10, 2),
         defaultValue: null,
         validate: {
-          min: {
-            args: 0,
-            msg: "GPA cannot be below 0.0"
-          },
-          max: {
-            args: 4,
-            msg: "GPA cannot be above 4.0"
-          }
+          min: 0,
+          max: 4
+          // min: {
+          //   args: 0.0,
+          //   msg: "GPA cannot be below 0.0"
+          // },
+          // max: {
+          //   args: 4.0,
+          //   msg: "GPA cannot be above 4.0"
+          // }
         }
       }
     },

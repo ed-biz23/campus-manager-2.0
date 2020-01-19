@@ -2,100 +2,113 @@ const Campuses = require("../models").Campuses;
 const Students = require("../models").Students;
 
 module.exports = {
-  create(req, res) {
-    return Campuses.create(req.body)
-      .then(campus => res.status(201).json(campus))
-      .catch(error => {
+  async create(req, res) {
+    try {
+      campus = await Campuses.create(req.body, {
+        include: [
+          {
+            model: Students,
+            as: "students"
+          }
+        ]
+      });
+      await campus.reload();
+      res.status(201).json(campus);
+    } catch (error) {
+      try {
         error = JSON.parse(JSON.stringify(error)).errors[0].message;
         res.status(400).json({ error });
-      });
+      } catch (error) {
+        res.status(501).json({ error: "Not Implemented." });
+      }
+    }
   },
 
-  list(_, res) {
-    return Campuses.findAll({
-      include: [
-        {
-          model: Students,
-          as: "students"
-        }
-      ],
-      order: [
-        ["createdAt", "DESC"],
-        [{ model: Students, as: "students" }, "createdAt", "ASC"]
-      ]
-    })
-      .then(campuses => res.json(campuses))
-      .catch(error => {
+  async list(_, res) {
+    try {
+      const campuses = await Campuses.findAll({
+        include: [
+          {
+            model: Students,
+            as: "students"
+          }
+        ]
+      });
+      res.json(campuses);
+    } catch (error) {
+      try {
         error = JSON.parse(JSON.stringify(error)).errors[0].message;
         res.status(400).json({ error });
-      });
+      } catch (error) {
+        res.status(501).json({ error: "Not Implemented." });
+      }
+    }
   },
 
-  retrieve(req, res) {
-    return Campuses.findByPk(req.params.id, {
-      include: [
-        {
-          model: Students,
-          as: "students"
-        }
-      ]
-    })
-      .then(campus => {
-        if (!campus) {
-          return res.status(404).json({ message: "Campus Not Found." });
-        }
-        return res.json(campus);
-      })
-      .catch(error => {
+  async retrieve(req, res) {
+    try {
+      campus = await Campuses.findByPk(req.params.campus_id, {
+        include: [
+          {
+            model: Students,
+            as: "students"
+          }
+        ]
+      });
+      if (!campus) {
+        return res.status(404).json({ message: "Campus Not Found." });
+      }
+      return res.json(campus);
+    } catch (error) {
+      try {
         error = JSON.parse(JSON.stringify(error)).errors[0].message;
         res.status(400).json({ error });
-      });
+      } catch (error) {
+        res.status(501).json({ error: "Not Implemented." });
+      }
+    }
   },
 
-  update(req, res) {
-    return Campuses.findByPk(req.params.id, {
-      include: [
-        {
-          model: Students,
-          as: "students"
-        }
-      ]
-    })
-      .then(campus => {
-        if (!campus) {
-          return res.status(404).json({ message: "Campus Not Found." });
-        }
-        return campus
-          .update(req.body)
-          .then(() => res.json({ campus }))
-          .catch(error => {
-            error = JSON.parse(JSON.stringify(error)).errors[0].message;
-            res.status(400).json({ error: error });
-          });
-      })
-      .catch(error => {
+  async update(req, res) {
+    try {
+      const campus = await Campuses.findByPk(req.params.campus_id, {
+        include: [
+          {
+            model: Students,
+            as: "students"
+          }
+        ]
+      });
+      if (!campus) {
+        return res.status(404).json({ message: "Campus Not Found." });
+      }
+      await campus.update(req.body);
+      res.json(campus);
+    } catch (error) {
+      try {
         error = JSON.parse(JSON.stringify(error)).errors[0].message;
         res.status(400).json({ error });
-      });
+      } catch (error) {
+        res.status(501).json({ error: "Not Implemented." });
+      }
+    }
   },
 
-  delete(req, res) {
-    return Campuses.findByPk(req.params.id)
-      .then(campus => {
-        if (!campus) {
-          return res.status(404).json({ message: "Campus Not Found" });
-        }
-        return campus
-          .destroy()
-          .then(() => res.status(204).send())
-          .catch(error => {
-            error = JSON.parse(JSON.stringify(error)).errors[0].message;
-            res.status(400).json({ error });
-          });
-      })
-      .catch(error => {
+  async delete(req, res) {
+    try {
+      const campus = await Campuses.findByPk(req.params.campus_id);
+      if (!campus) {
+        return res.status(404).json({ message: "Campus Not Found." });
+      }
+      await campus.destroy();
+      res.status(204).send();
+    } catch (error) {
+      try {
         error = JSON.parse(JSON.stringify(error)).errors[0].message;
         res.status(400).json({ error });
-      });
+      } catch (error) {
+        res.status(501).json({ error: "Not Implemented." });
+      }
+    }
   }
 };
